@@ -7,3 +7,5 @@ const Controls = ({ dispatch }) => {
     </div>
   );
 };
+
+export default Controls;

@@ -1,42 +1,72 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #000000;
+  color: #E6A20E;
+}
+
+.app-container {
   padding: 2rem;
+  max-width: 800px;
+  margin: auto;
+}
+
+.header {
   text-align: center;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #767e79;
+  padding-bottom: 1rem;
 }
 
 .logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  width: 25rem;
+  height: auto;
+  margin-bottom: .2rem;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+h1 {
+  color: #ec2127;
+  margin: 0;
+  font-size: 2rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+h3 {
+  color: #767e79;
+  font-weight: normal;
+  margin-top: 0.5rem;
 }
 
-.card {
-  padding: 2em;
+.tracker-main {
+  background-color: #1a1a1a;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 2px solid #767e79;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
 
-.read-the-docs {
-  color: #888;
+button {
+  background-color: #890c1e;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: #ec2127;
+}
+
+input[type="number"],
+input[type="text"] {
+  padding: 0.3rem 0.5rem;
+  border: 1px solid #767e79;
+  border-radius: 4px;
+  background-color: #000;
+  color: #fff;
+}
+
+label {
+  color: #E6A20E;
 }
