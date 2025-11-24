@@ -3,12 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://happybird22.github.io/CombatTracker",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
-    "homepage": "https://happybird22.github.io/CombatTracker"
   },
   "dependencies": {
     "react": "^19.1.0",
@@ -26,3 +26,4 @@
     "vite": "^6.3.5"
   }
 }
+
