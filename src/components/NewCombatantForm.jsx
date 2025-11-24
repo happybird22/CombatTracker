@@ -4,76 +4,23 @@ const NewCombatantForm = ({ dispatch }) => {
   const [name, setName] = useState("");
   const [hp, setHp] = useState("");
   const [initiative, setInitiative] = useState("");
+  const [advantage, setAdvantage] = useState(false);
+  const [disadvantage, setDisadvantage] = useState(false);
+  const [condition, setCondition] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!name || !hp || !initiative) return;
 
     const newCombatant = {
-      id: Date.now(), // simple unique ID
+      id: Date.now(),
       name,
       hp: parseInt(hp),
       initiative: parseInt(initiative),
+      advantage,
+      disadvantage,
+      condition,
     };
-
-    <label>
-  Advantage on next turn:
-  <input
-    type="checkbox"
-    checked={newCombatant.advantage}
-    onChange={e =>
-      setNewCombatant({
-        ...newCombatant,
-        advantage: e.target.checked
-      })
-    }
-  />
-</label>
-
-<label>
-  Disadvantage on next turn:
-  <input
-    type="checkbox"
-    checked={newCombatant.disadvantage}
-    onChange={e =>
-      setNewCombatant({
-        ...newCombatant,
-        disadvantage: e.target.checked
-      })
-    }
-  />
-</label>
-
-<label>
-  Condition:
-  <select
-    value={newCombatant.condition}
-    onChange={e =>
-      setNewCombatant({
-        ...newCombatant,
-        condition: e.target.value
-      })
-    }
-  >
-    <option value="">None</option>
-    <option value="blinded">Blinded</option>
-    <option value="charmed">Charmed</option>
-    <option value="deafened">Deafened</option>
-    <option value="frightened">Frightened</option>
-    <option value="grappled">Grappled</option>
-    <option value="incapacitated">Incapacitated</option>
-    <option value="paralyzed">Paralyzed</option>
-    <option value="petrified">Petrified</option>
-    <option value="poisoned">Poisoned</option>
-    <option value="prone">Prone</option>
-    <option value="restrained">Restrained</option>
-    <option value="stunned">Stunned</option>
-    <option value="unconscious">Unconscious</option>
-    <option value="blessed">Blessed</option>
-    <option value="inspiration">Has Inspiration</option>
-    <option value="huntersMark">Hunter’s Mark</option>
-  </select>
-</label>
 
     dispatch({ type: "ADD_COMBATANT", payload: newCombatant });
 
@@ -81,6 +28,9 @@ const NewCombatantForm = ({ dispatch }) => {
     setName("");
     setHp("");
     setInitiative("");
+    setAdvantage(false);
+    setDisadvantage(false);
+    setCondition("");
   };
 
   return (
@@ -107,9 +57,52 @@ const NewCombatantForm = ({ dispatch }) => {
         onChange={e => setInitiative(e.target.value)}
         required
       />
+      
+      <label>
+        <input
+          type="checkbox"
+          checked={advantage}
+          onChange={e => setAdvantage(e.target.checked)}
+        />
+        Advantage on next turn
+      </label>
+
+      <label>
+        <input
+          type="checkbox"
+          checked={disadvantage}
+          onChange={e => setDisadvantage(e.target.checked)}
+        />
+        Disadvantage on next turn
+      </label>
+
+      <label>
+        Condition:
+        <select value={condition} onChange={e => setCondition(e.target.value)}>
+          <option value="">None</option>
+          <option value="blinded">Blinded</option>
+          <option value="charmed">Charmed</option>
+          <option value="deafened">Deafened</option>
+          <option value="frightened">Frightened</option>
+          <option value="grappled">Grappled</option>
+          <option value="incapacitated">Incapacitated</option>
+          <option value="paralyzed">Paralyzed</option>
+          <option value="petrified">Petrified</option>
+          <option value="poisoned">Poisoned</option>
+          <option value="prone">Prone</option>
+          <option value="restrained">Restrained</option>
+          <option value="stunned">Stunned</option>
+          <option value="unconscious">Unconscious</option>
+          <option value="blessed">Blessed</option>
+          <option value="inspiration">Has Inspiration</option>
+          <option value="huntersMark">Hunter’s Mark</option>
+        </select>
+      </label>
+
       <button type="submit">Add</button>
     </form>
   );
 };
 
 export default NewCombatantForm;
+
