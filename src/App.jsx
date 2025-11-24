@@ -27,8 +27,7 @@ function App() {
    return (
     <div className="app-container">
       <header className="header">
-        <img src={logo} alt="Dungeons Not Dating logo" className="logo" />
-        <h1>Dungeons Not Dating Presents: Combat Tracker!</h1>
+        <h1>Combat Tracker!</h1>
         <h3>
           Simply add player characters and monsters with their name, HP and
           initiative and let this tracker sort them for you. Make managing
