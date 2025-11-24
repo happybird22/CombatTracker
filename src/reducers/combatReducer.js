@@ -34,6 +34,14 @@ case "SET_CONDITION":
     c.id === action.id ? { ...c, condition: action.condition } : c
   );
 
+   case "NEXT_TURN":
+  return state.map((c, index) => {
+    if (index === 0) {
+      return { ...c, advantage: false, disadvantage: false }; // reset for active combatant
+    }
+    return c;
+  }).slice(1).concat(state[0]); // move first combatant to the end
+ 
     default:
       return state;
   }
