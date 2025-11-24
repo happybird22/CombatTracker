@@ -19,6 +19,21 @@ export const combatReducer = (state, action) => {
           : c
       );
 
+      case "TOGGLE_ADVANTAGE":
+  return state.map(c =>
+    c.id === action.id ? { ...c, advantage: !c.advantage } : c
+  );
+
+case "TOGGLE_DISADVANTAGE":
+  return state.map(c =>
+    c.id === action.id ? { ...c, disadvantage: !c.disadvantage } : c
+  );
+
+case "SET_CONDITION":
+  return state.map(c =>
+    c.id === action.id ? { ...c, condition: action.condition } : c
+  );
+
     default:
       return state;
   }
