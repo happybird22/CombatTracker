@@ -4,7 +4,6 @@ import { initialCombatants } from "./data/initialCombatants";
 import TurnOrderList from "./components/TurnOrderList";
 import Controls from "./components/Controls";
 import NewCombatantForm from "./components/NewCombatantForm";
-import logo from "./assets/logo.jpg";
 import "./App.css";
 
 const STORAGE_KEY = "combat-tracker-state";
