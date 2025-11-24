@@ -1,16 +1,19 @@
+/* Reset and body styling */
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background-color: #000000;
-  color: #E6A20E;
+  background-color: #0d0d0d; /* slightly softer black */
+  color: #E6A20E; /* primary accent */
 }
 
+/* Container */
 .app-container {
   padding: 2rem;
-  max-width: 800px;
+  max-width: 900px;
   margin: auto;
 }
 
+/* Header styling */
 .header {
   text-align: center;
   margin-bottom: 2rem;
@@ -19,54 +22,84 @@ body {
 }
 
 .logo {
-  width: 25rem;
+  width: 22rem;
+  max-width: 90%;
   height: auto;
-  margin-bottom: .2rem;
+  margin-bottom: 0.5rem;
 }
 
 h1 {
-  color: #ec2127;
-  margin: 0;
-  font-size: 2rem;
+  color: #ec2127; /* brand red */
+  margin: 0.5rem 0;
+  font-size: 2.2rem;
 }
 
 h3 {
-  color: #767e79;
-  font-weight: normal;
+  color: #767e79; /* secondary neutral */
+  font-weight: 400;
   margin-top: 0.5rem;
+  font-size: 1rem;
 }
 
+/* Main tracker panel */
 .tracker-main {
-  background-color: #1a1a1a;
-  padding: 1.5rem;
+  background-color: #1a1a1a; /* dark panel */
+  padding: 2rem;
   border-radius: 12px;
   border: 2px solid #767e79;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
 }
 
+/* Buttons */
 button {
-  background-color: #890c1e;
+  background-color: #890c1e; /* dark red */
   color: #fff;
   border: none;
   padding: 0.6rem 1rem;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  font-weight: bold;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
 }
 
 button:hover {
-  background-color: #ec2127;
+  background-color: #ec2127; /* brand red highlight */
+  transform: scale(1.05);
 }
 
+/* Inputs */
 input[type="number"],
-input[type="text"] {
-  padding: 0.3rem 0.5rem;
+input[type="text"],
+select {
+  padding: 0.4rem 0.6rem;
   border: 1px solid #767e79;
-  border-radius: 4px;
+  border-radius: 5px;
   background-color: #000;
   color: #fff;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0.3rem;
+  margin-bottom: 0.8rem;
 }
 
+/* Labels */
 label {
   color: #E6A20E;
+  font-weight: bold;
+  display: block;
+  margin-top: 0.5rem;
 }
+
+/* Combatant cards */
+.combatant-card {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  background-color: #222;
+  border: 1px solid #767e79;
+  transition: transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.comb
+
