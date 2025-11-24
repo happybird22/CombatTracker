@@ -1,5 +1,5 @@
 const CombatantCard = ({ combatant, dispatch, isActive }) => {
-  const { id, name, hp, initiative } = combatant;
+  const { id, name, hp, initiative, advantage, disadvantage, condition } = combatant;
 
   const handleHPChange = (e) => {
     dispatch({
@@ -7,6 +7,18 @@ const CombatantCard = ({ combatant, dispatch, isActive }) => {
       payload: { id, hp: parseInt(e.target.value) },
     });
   };
+
+  const handleToggleAdvantage = () => {
+  dispatch({ type: "TOGGLE_ADVANTAGE", id });
+};
+
+const handleToggleDisadvantage = () => {
+  dispatch({ type: "TOGGLE_DISADVANTAGE", id });
+};
+
+const handleConditionChange = (e) => {
+  dispatch({ type: "SET_CONDITION", id, condition: e.target.value });
+};
 
   const handleRemove = () => {
     dispatch({ type: "REMOVE_COMBATANT", payload: { id } });
