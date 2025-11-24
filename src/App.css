@@ -101,5 +101,60 @@ label {
   transition: transform 0.1s ease, box-shadow 0.2s ease;
 }
 
-.comb
+.combatant-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
 
+.combatant-card h3 {
+  margin: 0 0 0.5rem 0;
+  color: #ec2127;
+}
+
+.combatant-card p {
+  margin: 0.3rem 0;
+}
+
+/* Active combatant */
+.combatant-card.active {
+  border: 3px solid limegreen;
+  background-color: #0a1f0a; /* subtle greenish highlight */
+}
+
+/* Turn order container */
+.turn-order {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Form styling for new combatants */
+form {
+  background-color: #111;
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 1px solid #767e79;
+  margin-bottom: 2rem;
+}
+
+form h2 {
+  margin-top: 0;
+  color: #ec2127;
+}
+
+form button {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+/* Misc small improvements */
+select {
+  background-color: #000;
+  color: #fff;
+}
+
+input:focus,
+select:focus,
+button:focus {
+  outline: none;
+  box-shadow: 0 0 5px #ec2127;
+}
