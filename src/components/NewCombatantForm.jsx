@@ -1,41 +1,88 @@
 import { useState } from "react";
+import MonsterLibrary from "./MonsterLibrary";
+import CharacterLibrary from "./CharacterLibrary";
 
 const NewCombatantForm = ({ dispatch }) => {
   const [name, setName] = useState("");
-  const [hp, setHp] = useState("");
+  const [maxHp, setMaxHp] = useState("");
   const [initiative, setInitiative] = useState("");
+  const [quantity, setQuantity] = useState("1");
   const [advantage, setAdvantage] = useState(false);
   const [disadvantage, setDisadvantage] = useState(false);
   const [condition, setCondition] = useState("");
+  const [showMonsterLibrary, setShowMonsterLibrary] = useState(false);
+  const [showCharacterLibrary, setShowCharacterLibrary] = useState(false);
+  const [selectedMonster, setSelectedMonster] = useState(null);
+
+  const handleSelectMonster = (monster) => {
+    setSelectedMonster(monster);
+    setName(monster.name);
+    setMaxHp(String(monster.maxHp));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!name || !hp || !initiative) return;
+    if (!name || !maxHp || !initiative) return;
 
-    const newCombatant = {
-      id: Date.now(),
-      name,
-      hp: parseInt(hp),
-      initiative: parseInt(initiative),
-      advantage,
-      disadvantage,
-      condition,
-    };
+    const count = Math.max(1, parseInt(quantity) || 1);
 
-    dispatch({ type: "ADD_COMBATANT", payload: newCombatant });
+    for (let i = 1; i <= count; i++) {
+      dispatch({
+        type: "ADD_COMBATANT",
+        payload: {
+          id: Date.now() + i,
+          name: count > 1 ? `${name} ${i}` : name,
+          hp: parseInt(maxHp),
+          maxHp: parseInt(maxHp),
+          tempHp: 0,
+          initiative: parseInt(initiative),
+          advantage,
+          disadvantage,
+          condition,
+        },
+      });
+    }
 
     // Reset form
     setName("");
-    setHp("");
+    setMaxHp("");
     setInitiative("");
+    setQuantity("1");
     setAdvantage(false);
     setDisadvantage(false);
     setCondition("");
+    setSelectedMonster(null);
   };
 
   return (
     <form onSubmit={handleSubmit} style={{ marginBottom: "2rem" }}>
       <h2>Add Combatant</h2>
+
+      <div className="library-toggles">
+        <button
+          type="button"
+          className="btn-secondary"
+          onClick={() => setShowMonsterLibrary(prev => !prev)}
+        >
+          {showMonsterLibrary ? "Hide Monster Library" : "Access Monster Library"}
+        </button>
+        <button
+          type="button"
+          className="btn-secondary"
+          onClick={() => setShowCharacterLibrary(prev => !prev)}
+        >
+          {showCharacterLibrary ? "Hide Character Library" : "Access Character Library"}
+        </button>
+      </div>
+
+      {showMonsterLibrary && (
+        <MonsterLibrary
+          onSelect={handleSelectMonster}
+          selectedName={selectedMonster?.name}
+        />
+      )}
+      {showCharacterLibrary && <CharacterLibrary />}
+
       <input
         type="text"
         placeholder="Name"
@@ -45,9 +92,9 @@ const NewCombatantForm = ({ dispatch }) => {
       />
       <input
         type="number"
-        placeholder="HP"
-        value={hp}
-        onChange={e => setHp(e.target.value)}
+        placeholder="Max HP"
+        value={maxHp}
+        onChange={e => setMaxHp(e.target.value)}
         required
       />
       <input
@@ -57,26 +104,35 @@ const NewCombatantForm = ({ dispatch }) => {
         onChange={e => setInitiative(e.target.value)}
         required
       />
-      
-      <label>
-        <input
-          type="checkbox"
-          checked={advantage}
-          onChange={e => setAdvantage(e.target.checked)}
-        />
-        Advantage on next turn
-      </label>
+      <input
+        type="number"
+        min="1"
+        placeholder="Quantity"
+        value={quantity}
+        onChange={e => setQuantity(e.target.value)}
+      />
 
-      <label>
-        <input
-          type="checkbox"
-          checked={disadvantage}
-          onChange={e => setDisadvantage(e.target.checked)}
-        />
-        Disadvantage on next turn
-      </label>
+      <div className="form-checkboxes">
+        <label>
+          <input
+            type="checkbox"
+            checked={advantage}
+            onChange={e => setAdvantage(e.target.checked)}
+          />
+          Advantage on next turn
+        </label>
 
-      <label>
+        <label>
+          <input
+            type="checkbox"
+            checked={disadvantage}
+            onChange={e => setDisadvantage(e.target.checked)}
+          />
+          Disadvantage on next turn
+        </label>
+      </div>
+
+      <label className="form-condition">
         Condition:
         <select value={condition} onChange={e => setCondition(e.target.value)}>
           <option value="">None</option>
@@ -99,7 +155,27 @@ const NewCombatantForm = ({ dispatch }) => {
         </select>
       </label>
 
-      <button type="submit">Add</button>
+      <div className="form-actions">
+        <div className="save-buttons-row">
+          <button
+            type="button"
+            className="btn-secondary"
+            disabled
+            title="Requires an account (coming soon)"
+          >
+            Save as Character and Add
+          </button>
+          <button
+            type="button"
+            className="btn-secondary"
+            disabled
+            title="Requires an account (coming soon)"
+          >
+            Save as Character Only
+          </button>
+        </div>
+        <button type="submit">Add</button>
+      </div>
     </form>
   );
 };

@@ -1,27 +1,11 @@
-import { useReducer, useEffect } from "react";
-import { combatReducer } from "./reducers/combatReducer";
-import { initialCombatants } from "./data/initialCombatants";
+import { useCombatTracker } from "./hooks/useCombatTracker";
 import TurnOrderList from "./components/TurnOrderList";
 import Controls from "./components/Controls";
 import NewCombatantForm from "./components/NewCombatantForm";
 import "./App.css";
 
-const STORAGE_KEY = "combat-tracker-state";
-
 function App() {
-  const [combatants, dispatch] = useReducer(
-    combatReducer,
-    [],
-    () => {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      return saved ? JSON.parse(saved) : initialCombatants;
-    }
-  );
-
-  // Save to localStorage whenever combatants change
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(combatants));
-  }, [combatants]);
+  const { combatants, dispatch } = useCombatTracker();
 
    return (
     <div className="app-container">

@@ -68,6 +68,12 @@ button:hover {
   transform: scale(1.05);
 }
 
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 /* Inputs */
 input[type="number"],
 input[type="text"],
@@ -125,6 +131,225 @@ label {
 .turn-order {
   display: flex;
   flex-direction: column;
+}
+
+/* HP summary line */
+.hp-summary {
+  font-size: 1.1rem;
+}
+
+.hp-summary .temp {
+  color: #E6A20E;
+}
+
+.hp-summary .down {
+  color: #ec2127;
+  font-weight: bold;
+}
+
+/* HP/Temp HP control rows */
+.hp-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.hp-controls input[type="number"] {
+  width: 90px;
+  margin: 0;
+}
+
+.hp-controls button {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+/* Button variants */
+.btn-danger {
+  background-color: #890c1e;
+}
+
+.btn-danger:hover {
+  background-color: #ec2127;
+}
+
+.btn-success {
+  background-color: #2f7a3d;
+}
+
+.btn-success:hover {
+  background-color: #3fae54;
+}
+
+.btn-secondary {
+  background-color: #3a3a3a;
+}
+
+.btn-secondary:hover {
+  background-color: #555;
+}
+
+/* Advantage / Disadvantage / Condition row */
+.status-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #333;
+}
+
+.status-controls label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  font-weight: normal;
+  color: #ccc;
+}
+
+.status-controls select {
+  width: auto;
+  margin: 0;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.edit-form h3 {
+  color: #ec2127;
+  margin: 0 0 0.5rem 0;
+}
+
+/* Checkbox rows in the Add Combatant form */
+.form-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 0.5rem 0 1rem;
+}
+
+.form-checkboxes label,
+.form-condition label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: normal;
+}
+
+.form-condition {
+  margin-bottom: 0.5rem;
+}
+
+.form-condition select {
+  width: auto;
+  margin: 0.3rem 0 0;
+}
+
+/* Library toggle buttons */
+.library-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.5rem 0 1rem;
+}
+
+.library-toggles button {
+  width: auto;
+  margin-top: 0;
+  flex: 1;
+}
+
+/* Save-as-Character / Add action row */
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.form-actions button {
+  margin-top: 0;
+}
+
+.save-buttons-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.save-buttons-row button {
+  flex: 1;
+  width: auto;
+  font-size: 0.85rem;
+  padding: 0.5rem 0.6rem;
+}
+
+/* Monster & character libraries */
+.monster-library,
+.character-library {
+  background-color: #111;
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 1px solid #767e79;
+  margin-bottom: 1.5rem;
+}
+
+.monster-library h2,
+.character-library h2 {
+  margin-top: 0;
+  color: #ec2127;
+}
+
+.library-hint {
+  color: #767e79;
+  font-size: 0.85rem;
+  margin-top: -0.5rem;
+}
+
+.monster-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.monster-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  background-color: #222;
+  border: 1px solid #767e79;
+  text-align: left;
+  padding: 0.6rem 0.8rem;
+}
+
+.monster-btn:hover {
+  background-color: #333;
+  transform: none;
+}
+
+.monster-btn.selected {
+  border-color: #E6A20E;
+  background-color: #2a2210;
+}
+
+.monster-name {
+  font-weight: bold;
+  color: #E6A20E;
+}
+
+.monster-stats {
+  font-size: 0.8rem;
+  color: #ccc;
+  font-weight: normal;
 }
 
 /* Form styling for new combatants */
