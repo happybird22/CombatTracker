@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { monsterLibrary, CR_ORDER } from "../data/monsterLibrary";
 
-const PAGE_SIZE = 8; // 2 rows of 4
-
-// One page per CR bracket; a bracket with more than PAGE_SIZE monsters
-// splits into consecutive sub-pages so every page stays a fixed size.
+// One page per CR bracket, however many monsters it holds.
 const buildPages = () => {
   const byCr = new Map();
   monsterLibrary.forEach((monster) => {
@@ -12,21 +9,9 @@ const buildPages = () => {
     byCr.get(monster.cr).push(monster);
   });
 
-  const pages = [];
-  CR_ORDER.forEach((cr) => {
-    const monsters = byCr.get(cr);
-    if (!monsters || monsters.length === 0) return;
-    const subPageCount = Math.ceil(monsters.length / PAGE_SIZE);
-    for (let i = 0; i < subPageCount; i++) {
-      pages.push({
-        cr,
-        subPageIndex: i,
-        subPageCount,
-        monsters: monsters.slice(i * PAGE_SIZE, (i + 1) * PAGE_SIZE),
-      });
-    }
-  });
-  return pages;
+  return CR_ORDER
+    .filter((cr) => byCr.has(cr))
+    .map((cr) => ({ cr, monsters: byCr.get(cr) }));
 };
 
 const PAGES = buildPages();
@@ -52,10 +37,7 @@ const MonsterLibrary = ({ onSelect, selectedName }) => {
         >
           ← Prev
         </button>
-        <span className="monster-page-label">
-          Challenge Rating {page.cr}
-          {page.subPageCount > 1 && ` (page ${page.subPageIndex + 1} of ${page.subPageCount})`}
-        </span>
+        <span className="monster-page-label">Challenge Rating {page.cr}</span>
         <button
           type="button"
           className="btn-secondary"
