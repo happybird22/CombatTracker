@@ -35,12 +35,16 @@ function App() {
    return (
     <div className="app-container">
       <header className="header">
+        <h1>Welcome to the Ultimate Combat Tracker Tool for D&amp;D</h1>
+        <p className="header-subheading">Made with love, The Dungeons Not Dating Team</p>
+
         <AuthPanel />
-        <h1>Combat Tracker!</h1>
+
         <h3>
-          Simply add player characters and monsters with their name, HP and
-          initiative and let this tracker sort them for you. Make managing
-          turns and health in combat quick and easy!
+          Built for Game Masters who would rather be narrating than doing
+          math. Add your characters and monsters, and this tracker instantly
+          sorts initiative, tracks HP, and keeps every round running
+          smoothly.
         </h3>
       </header>
 

@@ -69,6 +69,13 @@ h1 {
   letter-spacing: 0.02em;
 }
 
+.header-subheading {
+  margin: 0 0 1.25rem;
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
 h3 {
   color: var(--text-secondary);
   font-weight: 400;
@@ -736,22 +743,6 @@ button:focus {
   border-radius: 12px;
   background: var(--panel-raised);
   border: 1px solid var(--border);
-}
-
-.auth-welcome-heading {
-  margin: 0;
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  text-align: center;
-}
-
-.auth-welcome-subheading {
-  margin: 0 0 0.25rem;
-  font-size: 0.85rem;
-  font-style: italic;
-  color: var(--text-secondary);
-  text-align: center;
 }
 
 .auth-panel-form {

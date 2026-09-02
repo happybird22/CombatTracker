@@ -75,9 +75,6 @@ const AuthPanel = () => {
 
   return (
     <div className="auth-panel">
-      <h2 className="auth-welcome-heading">Welcome to the Ultimate Combat Tracker Tool for D&amp;D</h2>
-      <p className="auth-welcome-subheading">Made with love, The Dungeons Not Dating Team</p>
-
       {!isFirebaseConfigured && (
         <p className="auth-unconfigured-text">Sign-in isn't set up yet — see README.md to connect Firebase.</p>
       )}
