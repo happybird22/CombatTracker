@@ -5,15 +5,28 @@ import NewCombatantForm from "./components/NewCombatantForm";
 import AuthPanel from "./components/AuthPanel";
 import Footer from "./components/Footer";
 import PrivacyPolicy from "./components/PrivacyPolicy";
+import FAQ from "./components/FAQ";
 import "./App.css";
 
 function App() {
   const { combatants, dispatch } = useCombatTracker();
+  const path = window.location.pathname;
 
-  if (window.location.pathname === "/privacy") {
+  if (path === "/privacy") {
+    document.title = "Privacy Policy — Combat Tracker";
     return (
       <div className="app-container">
         <PrivacyPolicy />
+        <Footer />
+      </div>
+    );
+  }
+
+  if (path === "/faq") {
+    document.title = "FAQ — Combat Tracker";
+    return (
+      <div className="app-container">
+        <FAQ />
         <Footer />
       </div>
     );

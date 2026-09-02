@@ -1,4 +1,4 @@
-import dndLogo from "../assets/High Resolution-01.jpg";
+import dndLogo from "../assets/dnd-logo-footer.png";
 
 const Footer = () => (
   <footer className="site-footer">
@@ -13,9 +13,15 @@ const Footer = () => (
       </a>
       .
     </p>
-    <a href="/privacy" className="footer-privacy-link">
-      Privacy Policy
-    </a>
+    <div className="footer-links">
+      <a href="/faq" className="footer-privacy-link">
+        FAQ
+      </a>
+      <span className="footer-link-divider">·</span>
+      <a href="/privacy" className="footer-privacy-link">
+        Privacy Policy
+      </a>
+    </div>
   </footer>
 );
 
