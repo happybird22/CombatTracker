@@ -728,15 +728,62 @@ button:focus {
 /* Auth panel */
 .auth-panel {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  background: var(--panel-raised);
+  border: 1px solid var(--border);
+}
+
+.auth-welcome-heading {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.auth-welcome-subheading {
+  margin: 0 0 0.25rem;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.auth-panel-form {
+  display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
-  margin-bottom: 1.25rem;
-  padding: 0.75rem 1rem;
-  border-radius: 12px;
-  background: var(--panel-raised);
-  border: 1px solid var(--border);
+  width: 100%;
+  /* Override the global `form` element styling (panel background/padding/
+     border) since this form now lives nested inside the .auth-panel box. */
+  background: none;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  margin-bottom: 0;
+}
+
+.auth-unconfigured-text {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.auth-note {
+  margin: 0.25rem 0 0;
+  max-width: 34rem;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.4;
+  text-align: center;
 }
 
 .auth-panel input {
@@ -777,7 +824,12 @@ button:focus {
 }
 
 .auth-panel-signed-in {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   justify-content: space-between;
+  gap: 0.6rem;
+  width: 100%;
 }
 
 .auth-divider {
@@ -815,13 +867,6 @@ button:focus {
   filter: none;
   box-shadow: none;
   transform: none;
-}
-
-.auth-panel-unconfigured {
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  background: transparent;
-  border-style: dashed;
 }
 
 .auth-user-email {
@@ -906,4 +951,105 @@ button:focus {
 .custom-monster-form button {
   width: auto;
   flex-shrink: 0;
+}
+
+/* Site footer */
+.site-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.footer-logo {
+  width: 8rem;
+  max-width: 60%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.footer-tagline {
+  max-width: 34rem;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.footer-tagline a {
+  color: var(--red);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.footer-tagline a:hover {
+  text-decoration: underline;
+}
+
+.footer-privacy-link {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+
+.footer-privacy-link:hover {
+  color: var(--text-secondary);
+  text-decoration: underline;
+}
+
+/* Privacy policy page */
+.privacy-policy {
+  background-color: var(--panel);
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55), 0 0 40px rgba(235, 36, 40, 0.06);
+  line-height: 1.6;
+}
+
+.privacy-policy .back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.privacy-policy .back-link:hover {
+  color: var(--text-primary);
+  text-decoration: underline;
+}
+
+.privacy-policy h1 {
+  color: var(--red);
+  margin: 0 0 0.25rem;
+}
+
+.privacy-updated {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin: 0 0 1.5rem;
+}
+
+.privacy-policy h2 {
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  margin: 1.75rem 0 0.5rem;
+}
+
+.privacy-policy p,
+.privacy-policy li {
+  color: var(--text-secondary);
+}
+
+.privacy-policy ul {
+  padding-left: 1.25rem;
+}
+
+.privacy-policy a {
+  color: var(--red);
 }

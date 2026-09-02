@@ -3,10 +3,21 @@ import TurnOrderList from "./components/TurnOrderList";
 import Controls from "./components/Controls";
 import NewCombatantForm from "./components/NewCombatantForm";
 import AuthPanel from "./components/AuthPanel";
+import Footer from "./components/Footer";
+import PrivacyPolicy from "./components/PrivacyPolicy";
 import "./App.css";
 
 function App() {
   const { combatants, dispatch } = useCombatTracker();
+
+  if (window.location.pathname === "/privacy") {
+    return (
+      <div className="app-container">
+        <PrivacyPolicy />
+        <Footer />
+      </div>
+    );
+  }
 
    return (
     <div className="app-container">
@@ -25,6 +36,8 @@ function App() {
         <Controls dispatch={dispatch} />
         <TurnOrderList combatants={combatants} dispatch={dispatch} />
       </main>
+
+      <Footer />
     </div>
   );
 }

@@ -38,27 +38,6 @@ const AuthPanel = () => {
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  if (!isFirebaseConfigured) {
-    return (
-      <div className="auth-panel auth-panel-unconfigured">
-        <span>Sign-in isn't set up yet — see README.md to connect Firebase.</span>
-      </div>
-    );
-  }
-
-  if (authLoading) return null;
-
-  if (user) {
-    return (
-      <div className="auth-panel auth-panel-signed-in">
-        <span className="auth-user-email">Signed in as {user.email}</span>
-        <button type="button" className="btn-secondary" onClick={logOut}>
-          Sign Out
-        </button>
-      </div>
-    );
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -95,60 +74,86 @@ const AuthPanel = () => {
   };
 
   return (
-    <form className="auth-panel" onSubmit={handleSubmit}>
-      <div className="auth-panel-tabs">
-        <button
-          type="button"
-          className={`auth-tab${mode === "signin" ? " active" : ""}`}
-          onClick={() => { setMode("signin"); setError(""); }}
-        >
-          Sign In
-        </button>
-        <button
-          type="button"
-          className={`auth-tab${mode === "signup" ? " active" : ""}`}
-          onClick={() => { setMode("signup"); setError(""); }}
-        >
-          Create Account
-        </button>
-      </div>
+    <div className="auth-panel">
+      <h2 className="auth-welcome-heading">Welcome to the Ultimate Combat Tracker Tool for D&amp;D</h2>
+      <p className="auth-welcome-subheading">Made with love, The Dungeons Not Dating Team</p>
 
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-        autoComplete="email"
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-        autoComplete={mode === "signup" ? "new-password" : "current-password"}
-        minLength={6}
-        required
-      />
+      {!isFirebaseConfigured && (
+        <p className="auth-unconfigured-text">Sign-in isn't set up yet — see README.md to connect Firebase.</p>
+      )}
 
-      {error && <p className="auth-error">{error}</p>}
+      {isFirebaseConfigured && !authLoading && user && (
+        <div className="auth-panel-signed-in">
+          <span className="auth-user-email">Signed in as {user.email}</span>
+          <button type="button" className="btn-secondary" onClick={logOut}>
+            Sign Out
+          </button>
+        </div>
+      )}
 
-      <button type="submit" disabled={submitting}>
-        {submitting ? "Please wait…" : mode === "signup" ? "Create Account" : "Sign In"}
-      </button>
+      {isFirebaseConfigured && !authLoading && !user && (
+        <form className="auth-panel-form" onSubmit={handleSubmit}>
+          <div className="auth-panel-tabs">
+            <button
+              type="button"
+              className={`auth-tab${mode === "signin" ? " active" : ""}`}
+              onClick={() => { setMode("signin"); setError(""); }}
+            >
+              Sign In
+            </button>
+            <button
+              type="button"
+              className={`auth-tab${mode === "signup" ? " active" : ""}`}
+              onClick={() => { setMode("signup"); setError(""); }}
+            >
+              Create Account
+            </button>
+          </div>
 
-      <div className="auth-divider"><span>or</span></div>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            autoComplete="email"
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            autoComplete={mode === "signup" ? "new-password" : "current-password"}
+            minLength={6}
+            required
+          />
 
-      <button
-        type="button"
-        className="google-signin-btn"
-        disabled={submitting}
-        onClick={handleGoogleSignIn}
-      >
-        <GoogleIcon />
-        Continue with Google
-      </button>
-    </form>
+          {error && <p className="auth-error">{error}</p>}
+
+          <button type="submit" disabled={submitting}>
+            {submitting ? "Please wait…" : mode === "signup" ? "Create Account" : "Sign In"}
+          </button>
+
+          <div className="auth-divider"><span>or</span></div>
+
+          <button
+            type="button"
+            className="google-signin-btn"
+            disabled={submitting}
+            onClick={handleGoogleSignIn}
+          >
+            <GoogleIcon />
+            Continue with Google
+          </button>
+        </form>
+      )}
+
+      <p className="auth-note">
+        Login is Not required for use, so please enjoy with or without an account. Please note
+        certain features do require an account in order to save your Players data or custom
+        monsters. Accounts are still free to all.
+      </p>
+    </div>
   );
 };
 
