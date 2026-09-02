@@ -10,7 +10,8 @@ export function useCombatTracker() {
     [],
     () => {
       const saved = localStorage.getItem(STORAGE_KEY);
-      return saved ? JSON.parse(saved) : initialCombatants;
+      if (saved) return JSON.parse(saved);
+      return [...initialCombatants].sort((a, b) => b.initiative - a.initiative);
     }
   );
 

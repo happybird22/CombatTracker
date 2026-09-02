@@ -1,20 +1,49 @@
 import { useState } from "react";
+import { CONDITIONS, conditionLabel } from "../data/conditions";
+
+const hpBucket = (hp, maxHp) => {
+  if (hp <= 0) return "empty";
+  const pct = hp / maxHp;
+  if (pct > 0.5) return "high";
+  if (pct > 0.25) return "mid";
+  return "low";
+};
 
 const CombatantCard = ({ combatant, dispatch, isActive }) => {
-  const { id, name, hp, maxHp, tempHp, initiative, advantage, disadvantage, condition } = combatant;
+  const {
+    id,
+    name,
+    type,
+    hp,
+    maxHp,
+    tempHp,
+    ac,
+    initiative,
+    advantage,
+    disadvantage,
+    conditions = [],
+    concentrating,
+    pendingConcentrationCheck,
+    deathSaves = { successes: 0, failures: 0 },
+  } = combatant;
+
   const [amount, setAmount] = useState("");
   const [tempAmount, setTempAmount] = useState("");
+  const [newCondition, setNewCondition] = useState("");
+  const [newConditionDuration, setNewConditionDuration] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState(name);
   const [editInitiative, setEditInitiative] = useState(initiative);
   const [editHp, setEditHp] = useState(hp);
   const [editMaxHp, setEditMaxHp] = useState(maxHp);
+  const [editAc, setEditAc] = useState(ac ?? "");
 
   const handleStartEdit = () => {
     setEditName(name);
     setEditInitiative(initiative);
     setEditHp(hp);
     setEditMaxHp(maxHp);
+    setEditAc(ac ?? "");
     setIsEditing(true);
   };
 
@@ -27,12 +56,19 @@ const CombatantCard = ({ combatant, dispatch, isActive }) => {
     const newMaxHp = parseInt(editMaxHp);
     const newHp = parseInt(editHp);
     const newInitiative = parseInt(editInitiative);
+    const parsedAc = parseInt(editAc);
     if (!editName || !Number.isInteger(newMaxHp) || !Number.isInteger(newHp) || !Number.isInteger(newInitiative)) return;
 
     dispatch({
       type: "EDIT_COMBATANT",
       id,
-      updates: { name: editName, initiative: newInitiative, hp: newHp, maxHp: newMaxHp },
+      updates: {
+        name: editName,
+        initiative: newInitiative,
+        hp: newHp,
+        maxHp: newMaxHp,
+        ac: Number.isInteger(parsedAc) ? parsedAc : null,
+      },
     });
     setIsEditing(false);
   };
@@ -66,8 +102,32 @@ const CombatantCard = ({ combatant, dispatch, isActive }) => {
     dispatch({ type: "TOGGLE_DISADVANTAGE", id });
   };
 
-  const handleConditionChange = (e) => {
-    dispatch({ type: "SET_CONDITION", id, condition: e.target.value });
+  const handleAddCondition = () => {
+    if (!newCondition) return;
+    const duration = parseInt(newConditionDuration);
+    dispatch({
+      type: "ADD_CONDITION",
+      id,
+      condition: { name: newCondition, duration: Number.isInteger(duration) && duration > 0 ? duration : null },
+    });
+    setNewCondition("");
+    setNewConditionDuration("");
+  };
+
+  const handleRemoveCondition = (conditionName) => {
+    dispatch({ type: "REMOVE_CONDITION", id, conditionName });
+  };
+
+  const handleToggleConcentration = () => {
+    dispatch({ type: "TOGGLE_CONCENTRATION", id });
+  };
+
+  const handleDismissConcentrationCheck = () => {
+    dispatch({ type: "DISMISS_CONCENTRATION_CHECK", id });
+  };
+
+  const handleAdjustDeathSave = (kind, delta) => {
+    dispatch({ type: "ADJUST_DEATH_SAVE", id, kind, delta });
   };
 
   const handleRemove = () => {
@@ -88,6 +148,16 @@ const CombatantCard = ({ combatant, dispatch, isActive }) => {
               value={editName}
               onChange={e => setEditName(e.target.value)}
               required
+            />
+          </label>
+
+          <label>
+            AC
+            <input
+              type="number"
+              placeholder="Optional"
+              value={editAc}
+              onChange={e => setEditAc(e.target.value)}
             />
           </label>
 
@@ -138,7 +208,10 @@ const CombatantCard = ({ combatant, dispatch, isActive }) => {
 
   return (
     <div className={`combatant-card${isActive ? " active" : ""}`}>
-      <h3>{name} {isActive && <span>🎯</span>}</h3>
+      <h3>
+        {name} {isActive && <span>🎯</span>}
+        {ac != null && <span className="ac-badge" title="Armor Class">AC {ac}</span>}
+      </h3>
       <p>Initiative: {initiative}</p>
 
       <p className="hp-summary">
@@ -146,6 +219,48 @@ const CombatantCard = ({ combatant, dispatch, isActive }) => {
         {tempHp > 0 && <span className="temp"> (+{tempHp} temp)</span>}
         {hp === 0 && <span className="down"> (Down)</span>}
       </p>
+
+      <div className={`hp-bar hp-bar-${hpBucket(hp, maxHp)}`}>
+        <div className="hp-bar-fill" style={{ width: `${maxHp > 0 ? Math.min(100, (hp / maxHp) * 100) : 0}%` }} />
+        {tempHp > 0 && (
+          <div
+            className="hp-bar-temp"
+            style={{ width: `${maxHp > 0 ? Math.min(100 - (hp / maxHp) * 100, (tempHp / maxHp) * 100) : 0}%` }}
+          />
+        )}
+      </div>
+
+      {type === "pc" && hp === 0 && (
+        <div className="death-saves">
+          <span className="death-saves-label">Death Saves</span>
+          <div className="death-saves-row">
+            <span className="death-saves-pips success">
+              {[0, 1, 2].map(i => (
+                <button
+                  type="button"
+                  key={`s-${i}`}
+                  className={`pip${i < deathSaves.successes ? " filled" : ""}`}
+                  onClick={() => handleAdjustDeathSave("successes", i < deathSaves.successes ? -1 : 1)}
+                  aria-label={`Death save success ${i + 1}`}
+                />
+              ))}
+            </span>
+            <span className="death-saves-pips failure">
+              {[0, 1, 2].map(i => (
+                <button
+                  type="button"
+                  key={`f-${i}`}
+                  className={`pip${i < deathSaves.failures ? " filled" : ""}`}
+                  onClick={() => handleAdjustDeathSave("failures", i < deathSaves.failures ? -1 : 1)}
+                  aria-label={`Death save failure ${i + 1}`}
+                />
+              ))}
+            </span>
+          </div>
+          {deathSaves.successes >= 3 && <p className="death-saves-status stable">Stabilized</p>}
+          {deathSaves.failures >= 3 && <p className="death-saves-status dead">Dead</p>}
+        </div>
+      )}
 
       <div className="hp-controls">
         <input
@@ -197,30 +312,61 @@ const CombatantCard = ({ combatant, dispatch, isActive }) => {
         </label>
 
         <label>
-          Condition:
-          <select
-            value={condition || ""}
-            onChange={handleConditionChange}
-          >
-            <option value="">None</option>
-            <option value="blinded">Blinded</option>
-            <option value="charmed">Charmed</option>
-            <option value="deafened">Deafened</option>
-            <option value="frightened">Frightened</option>
-            <option value="grappled">Grappled</option>
-            <option value="incapacitated">Incapacitated</option>
-            <option value="paralyzed">Paralyzed</option>
-            <option value="petrified">Petrified</option>
-            <option value="poisoned">Poisoned</option>
-            <option value="prone">Prone</option>
-            <option value="restrained">Restrained</option>
-            <option value="stunned">Stunned</option>
-            <option value="unconscious">Unconscious</option>
-            <option value="blessed">Blessed</option>
-            <option value="inspiration">Has Inspiration</option>
-            <option value="huntersMark">Hunter’s Mark</option>
-          </select>
+          <input
+            type="checkbox"
+            checked={!!concentrating}
+            onChange={handleToggleConcentration}
+          />
+          Concentrating
         </label>
+      </div>
+
+      {pendingConcentrationCheck != null && (
+        <div className="concentration-banner">
+          <span>⚠ Concentration save! DC {pendingConcentrationCheck}</span>
+          <button type="button" className="btn-secondary" onClick={handleDismissConcentrationCheck}>
+            Dismiss
+          </button>
+        </div>
+      )}
+
+      <div className="conditions-section">
+        {conditions.length > 0 && (
+          <div className="conditions-list">
+            {conditions.map(cond => (
+              <span key={cond.name} className="condition-chip">
+                {conditionLabel(cond.name)}
+                {cond.duration != null && ` (${cond.duration})`}
+                <button
+                  type="button"
+                  className="condition-chip-remove"
+                  onClick={() => handleRemoveCondition(cond.name)}
+                  aria-label={`Remove ${conditionLabel(cond.name)}`}
+                >
+                  ×
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+        <div className="condition-add-row">
+          <select value={newCondition} onChange={e => setNewCondition(e.target.value)}>
+            <option value="">Add condition…</option>
+            {CONDITIONS.map(({ value, label }) => (
+              <option key={value} value={value}>{label}</option>
+            ))}
+          </select>
+          <input
+            type="number"
+            min="1"
+            placeholder="Rounds (optional)"
+            value={newConditionDuration}
+            onChange={e => setNewConditionDuration(e.target.value)}
+          />
+          <button type="button" className="btn-secondary" onClick={handleAddCondition}>
+            Add
+          </button>
+        </div>
       </div>
 
       <div className="card-footer">
@@ -236,4 +382,3 @@ const CombatantCard = ({ combatant, dispatch, isActive }) => {
 };
 
 export default CombatantCard;
-

@@ -8,9 +8,12 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "vite build && npx firebase-tools deploy --only hosting",
+    "deploy:rules": "npx firebase-tools deploy --only firestore:rules"
   },
   "dependencies": {
+    "firebase": "^12.18.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
@@ -26,4 +29,3 @@
     "vite": "^6.3.5"
   }
 }
-

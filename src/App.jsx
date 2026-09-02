@@ -2,6 +2,7 @@ import { useCombatTracker } from "./hooks/useCombatTracker";
 import TurnOrderList from "./components/TurnOrderList";
 import Controls from "./components/Controls";
 import NewCombatantForm from "./components/NewCombatantForm";
+import AuthPanel from "./components/AuthPanel";
 import "./App.css";
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
    return (
     <div className="app-container">
       <header className="header">
+        <AuthPanel />
         <h1>Combat Tracker!</h1>
         <h3>
           Simply add player characters and monsters with their name, HP and
