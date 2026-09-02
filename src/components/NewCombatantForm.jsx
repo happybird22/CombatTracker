@@ -5,6 +5,7 @@ import CustomMonsterLibrary from "./CustomMonsterLibrary";
 import { CONDITIONS } from "../data/conditions";
 import { useAuth } from "../context/AuthContext";
 import { saveCharacter } from "../services/characterService";
+import { saveCustomMonster } from "../services/customMonsterService";
 
 const NewCombatantForm = ({ dispatch }) => {
   const { user } = useAuth();
@@ -85,50 +86,59 @@ const NewCombatantForm = ({ dispatch }) => {
     resetForm();
   };
 
-  const handleSaveCharacterAndAdd = async () => {
+  // PCs save to the Character Library; everything else (monster/NPC) saves
+  // to the custom monster library — the buttons follow whichever tab is active.
+  const saveToLibrary = (uid, values) =>
+    type === "pc" ? saveCharacter(uid, values) : saveCustomMonster(uid, values);
+
+  const libraryName = type === "pc" ? "Character Library" : "My Monsters";
+
+  const handleSaveToLibraryAndAdd = async () => {
     if (!user || !name || !maxHp || !initiative) return;
     const parsedAc = parseInt(ac);
-    const characterName = name;
+    const savedName = name;
+    const savedType = type;
     setSaveStatus(null);
     // Adding to the encounter is local and always succeeds — don't block it
     // on the cloud save, just report separately if that part fails.
-    addCombatants("pc");
+    addCombatants();
     resetForm();
     try {
-      await saveCharacter(user.uid, {
-        name: characterName,
+      await saveToLibrary(user.uid, {
+        name: savedName,
         maxHp: parseInt(maxHp),
         ac: Number.isInteger(parsedAc) ? parsedAc : null,
       });
-      setSaveStatus({ type: "success", message: `Saved "${characterName}" and added to the encounter.` });
+      setSaveStatus({ type: "success", message: `Saved "${savedName}" and added to the encounter.` });
     } catch (err) {
-      console.error("Failed to save character:", err);
+      console.error("Failed to save to library:", err);
+      const destination = savedType === "pc" ? "Character Library" : "My Monsters";
       setSaveStatus({
         type: "error",
-        message: `Added "${characterName}" to the encounter, but saving to your Character Library failed (${err.code || err.message}).`,
+        message: `Added "${savedName}" to the encounter, but saving to ${destination} failed (${err.code || err.message}).`,
       });
     }
   };
 
-  const handleSaveCharacterOnly = async () => {
+  const handleSaveToLibraryOnly = async () => {
     if (!user || !name || !maxHp) return;
     const parsedAc = parseInt(ac);
     setSaveStatus(null);
     try {
-      await saveCharacter(user.uid, {
+      await saveToLibrary(user.uid, {
         name,
         maxHp: parseInt(maxHp),
         ac: Number.isInteger(parsedAc) ? parsedAc : null,
       });
       resetForm();
-      setSaveStatus({ type: "success", message: `Saved "${name}" to your Character Library.` });
+      setSaveStatus({ type: "success", message: `Saved "${name}" to ${libraryName}.` });
     } catch (err) {
-      console.error("Failed to save character:", err);
+      console.error("Failed to save to library:", err);
       setSaveStatus({ type: "error", message: `Couldn't save "${name}" (${err.code || err.message}).` });
     }
   };
 
-  const saveDisabledReason = !user ? "Sign in to save characters" : undefined;
+  const saveDisabledReason = !user ? "Sign in to save to your library" : undefined;
 
   return (
     <form onSubmit={handleSubmit} style={{ marginBottom: "2rem" }}>
@@ -277,18 +287,18 @@ const NewCombatantForm = ({ dispatch }) => {
             className="btn-secondary"
             disabled={!user}
             title={saveDisabledReason}
-            onClick={handleSaveCharacterAndAdd}
+            onClick={handleSaveToLibraryAndAdd}
           >
-            Save as Character and Add
+            Save to My Library and Add
           </button>
           <button
             type="button"
             className="btn-secondary"
             disabled={!user}
             title={saveDisabledReason}
-            onClick={handleSaveCharacterOnly}
+            onClick={handleSaveToLibraryOnly}
           >
-            Save as Character Only
+            Save to My Library Only
           </button>
         </div>
         <button type="submit">Add</button>

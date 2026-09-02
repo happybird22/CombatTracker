@@ -393,6 +393,30 @@ label {
   margin-top: -0.5rem;
 }
 
+.monster-page-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.monster-page-nav button {
+  padding: 0.4rem 0.9rem;
+}
+
+.monster-page-nav button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.monster-page-label {
+  font-weight: 600;
+  color: var(--text-primary);
+  min-width: 12rem;
+  text-align: center;
+}
+
 .monster-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));

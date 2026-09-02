@@ -46,7 +46,7 @@ const CharacterLibrary = ({ onSelect, selectedName }) => {
 
       {characters.length === 0 ? (
         <p className="library-hint">
-          No saved characters yet — use "Save as Character" below to add one.
+          No saved characters yet — set the type to "Player Character" below and use "Save to My Library" to add one.
         </p>
       ) : (
         <div className="monster-grid">
