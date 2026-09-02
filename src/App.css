@@ -41,8 +41,8 @@ body {
 
 /* Container */
 .app-container {
-  padding: 2rem;
-  max-width: 900px;
+  padding: 1.5rem;
+  max-width: 1200px;
   margin: auto;
 }
 
